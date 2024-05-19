@@ -1,0 +1,25 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 23 Apr 2024, 14:49:44
+    Author     : david
+*/
+
+body{
+    display: grid;
+    width: 90%;
+    height: 90%;
+    background-color: rgb(220, 231, 247);
+    margin: 5%;
+    border-radius: 6px;
+    grid-template-rows: 50px 100px;
+}
+#big-table{
+    background-color: lightyellow;
+    border-collapse: collapse;
+}
+#big-table tr:nth-of-type(odd){
+    background-color:#ccc;
+}

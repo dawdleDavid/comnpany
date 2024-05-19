@@ -1,0 +1,139 @@
+body{
+    display: grid;
+    width: 90%;
+    height: 90%;
+    background-color: rgb(220, 231, 247);
+    margin: 5%;
+    border-radius: 6px;
+    grid-template-rows: 50px 100px;
+}
+#login-info-box{
+    margin: 0%;
+    background-color: lightslategray;
+
+}
+
+#login-info-box ul{
+    margin-left:  40px;
+    list-style-type: none;
+}
+#login-info-box img{
+    width: 80%;
+    height: 80%;
+    margin: 10%;
+}
+#login-info-box li{
+    color: white;
+    font-weight: 900;
+    font-style: italic;
+}
+.controls{
+    margin: 0%;
+    grid-column-start: 2;
+    grid-column-end: span col4-start;
+    grid-row-start: 1;
+    grid-row-end: span 2;
+    /* stick nonsense */
+    position: sticky;
+    top: 0;
+    left: 0;
+    align-self: start;
+    
+}
+.controls-member{
+    width: 100%;
+    resize: none;
+    margin-left: 0px;
+}
+
+.change-password-box{
+    border-radius: 5%;
+    width: 50%;
+    resize: none;
+    margin-left: 0px;
+    background-color: white;
+}
+.change-password-box button{
+    margin: 25%;
+}
+.order-member{
+    resize: none;
+    margin-left: 0px;
+}
+.post-order{
+    display: grid;
+}
+#list{
+    /*grid*/
+    margin-left: 6%;
+    grid-column-start: 3;
+    grid-column-end: span col4-start;
+    grid-row-start: 2;
+    grid-row-end: span 2;
+    /*style*/
+    border-collapse: collapse;
+}
+#list th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+#list .orders{
+    background-color: white;
+}
+#phone-section{
+    background-color: lightblue;
+}
+#phone-section img{
+    width: 20%;
+}
+#phone-section button{
+    margin-left: 10%;
+    width: 80%;
+}
+.orders-for{
+    background-color: rgb(200, 200, 255);
+    width: 100%;
+}
+.changecolor{
+    background-color: white;
+}
+.customer{
+    background-color: lightblue;
+}
+.info-dump{
+    grid-area: auto;
+    display: none;
+}
+.info-dump form{
+    width: 50%;
+    margin-left: 25%;
+}
+.orderdetails{
+    border-collapse: collapse;
+    background-color: lightyellow;
+    overflow: hidden;
+}
+.orderdetails th td{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.orderdetails tr:nth-of-type(odd){
+    background-color:#ccc;
+}
+.info-dump-tr td{
+    width: 100%;
+}
+.hidden-tr{
+    /*grid-area: auto;*/
+    display: none;
+    grid-area: auto;
+    display: none;
+    width: 50%;
+    margin-left: 25%;
+}
+/*
+.hidden-td tr:nth-of-type(odd){
+    background-color:#ccc;
+}*/
