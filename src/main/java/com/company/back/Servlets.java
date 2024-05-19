@@ -45,14 +45,11 @@ class Validation{
             }
         }
         if(check != null){
-                if(check.getValue().equals(request.getSession().getAttribute("empnum_hashed"))){
+            if(check.getValue().equals(request.getSession().getAttribute("empnum_hashed"))){
                 return true;
             }   
         }
-        
 
-        
-        
         return false;
     }
     public Validation(){
@@ -91,8 +88,7 @@ public class Servlets extends HttpServlet{
                 request.getRequestDispatcher("logout").forward(request, response);   
                 return;
             }
-            
-            
+
             
             if(this.parameters.contains("")){
                 System.out.println("this.parameters.contains(null)");
@@ -389,6 +385,7 @@ class UpdateOrder extends HttpServlet{
                    }
              }
     }
+    
 }
 @WebServlet("/updateOrderDetails")
 class updateOrderDetails extends HttpServlet{
@@ -454,7 +451,13 @@ class updateOrderDetails extends HttpServlet{
                     }
                 }
             }
-        }              
+        }
+        /*
+            Om vi tar oss ner hit innebär det att sessionen är invaliderad
+        */
+        
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("logout");   
+	requestDispatcher.forward(request, response);
     }
 }
 

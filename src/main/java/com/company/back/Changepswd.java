@@ -76,12 +76,12 @@ public class Changepswd extends HttpServlet {
         
         // ett sätt att ta parameternamnen, detta är ett sätt att se vilken knapp som har tryckts
         Enumeration<String> names = request.getParameterNames();
+        System.out.println("names:" +names);
+        String btn = names.nextElement();
 
-        String empnum = names.nextElement();
+        System.out.println(btn);
 
-        System.out.println(empnum);
-
-        System.out.println("empnum:" + empnum);
+        System.out.println("empnum:" + btn);
 
         Getstuff get = new Getstuff();
         Changestuff change = new Changestuff(get.GetConnection());
@@ -89,13 +89,13 @@ public class Changepswd extends HttpServlet {
 
         String hashed_password = util.HashString("temporary", "SHA-256"); // templösen som har bestämmts 
         // kontrolerar vilken knapp som har tryckts
-        if (empnum.equals("deny")) {
+        if (btn.equals("deny")) {
             System.out.println("deny");
-            change.RequestPasswordChange(empnum, "0");
-        } else {
+            change.RequestPasswordChange((String)request.getAttribute("EmployeeNumber"), "1");
+        }else if(btn.equals("allow")){
             System.out.println("allow");
-            change.RequestPasswordChange(empnum, "2");
-            change.genericQuery("UPDATE employees SET password='" + hashed_password + "' WHERE employeeNumber ='" + empnum + "';");
+            change.RequestPasswordChange((String)request.getAttribute("EmployeeNumber"), "0");
+            change.genericQuery("UPDATE employees SET password='" + hashed_password + "' WHERE employeeNumber ='" + request.getAttribute("EmployeeNumber") + "';");
         }
 
         request.getRequestDispatcher("response.jsp").forward(request, response);

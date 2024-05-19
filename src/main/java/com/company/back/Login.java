@@ -88,13 +88,7 @@ public class Login extends HttpServlet{
             /*
                 Set session attributes..
             */
-            session.setAttribute("EmployeeNumber", this.username);
-            session.setAttribute("empnum_hashed", util.HashString(this.username, "SHA-256"));
-            session.setAttribute("Firstname", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "firstName", "employees", "employeeNumber").get(0));
-            session.setAttribute("Job", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "jobTitle", "employees", "employeeNumber").get(0));
-            session.setAttribute("Lastname", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "lastName", "employees", "employeeNumber").get(0));
-            session.setAttribute("Extension", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "extension", "employees", "employeeNumber").get(0));
-            session.setAttribute("ChangePswd", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "requirePwdChange", "employees", "employeeNumber").get(0));
+      
             // cookies
             
             // validation 
@@ -110,33 +104,38 @@ public class Login extends HttpServlet{
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
                     /*
-                        Kontrollera om användaren redan är inloggad med samma session, i detta fall spottas dom tillbaka
+                        Om användaren är inloggad, skapa inte en ny session..
                     */
-                  if(cookie.getValue().equals(util.HashString(this.username, "SHA-256"))){
-                            response.sendRedirect("index.jsp");
-                            return;
-                        } 
-                    
+                  if(cookie.getName().equals(util.HashString(this.username, "SHA-256"))){
+                        
+                        request.getRequestDispatcher("response.jsp").forward(request, response);
+                        return;
+                    } 
                 }
             }
-            
+            session.setAttribute("EmployeeNumber", this.username);
+            session.setAttribute("empnum_hashed", util.HashString(this.username, "SHA-256"));
+            session.setAttribute("Firstname", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "firstName", "employees", "employeeNumber").get(0));
+            session.setAttribute("Job", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "jobTitle", "employees", "employeeNumber").get(0));
+            session.setAttribute("Lastname", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "lastName", "employees", "employeeNumber").get(0));
+            session.setAttribute("Extension", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "extension", "employees", "employeeNumber").get(0));
+            session.setAttribute("ChangePswd", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "requirePwdChange", "employees", "employeeNumber").get(0));
             
             
             Cookie UserCookie = new Cookie(util.HashString(session.toString() + "empnum", "SHA-256"), util.HashString(this.username, "SHA-256"));	
-            
-            
-            
+            Cookie SessionCookie = new Cookie(util.HashString(this.username, "SHA-256"), session.toString());
             Cookie LoginTimeCookie = new Cookie("logintime", URLEncoder.encode( new java.util.Date().toString(), "UTF-8" ));
             
             UserCookie.setMaxAge(60 * 60 * 24); // max login time, (om man laddar om sidan)
             UserCookie.setDomain("localhost");
             LoginTimeCookie.setMaxAge(60 * 60 * 24 * 7 * 4);
-            
-            
+            LoginTimeCookie.setDomain("localhost");
+            SessionCookie.setMaxAge(60 * 60 * 24 * 7 * 4);
+            SessionCookie.setDomain("localhost");
             
             response.addCookie(UserCookie);
 	    response.addCookie(LoginTimeCookie);
-
+            response.addCookie(SessionCookie);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("response.jsp");
             
             
