@@ -98,6 +98,30 @@ public class Login extends HttpServlet{
             // cookies
             
             // validation 
+            
+            
+            /*
+                Kontrollera att användaren inte redan är inloggad som någon på denna enhet..
+            
+            */
+            
+          
+            Cookie[] cookies = request.getCookies();    
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    /*
+                        Kontrollera om användaren redan är inloggad med samma session, i detta fall spottas dom tillbaka
+                    */
+                  if(cookie.getValue().equals(util.HashString(this.username, "SHA-256"))){
+                            response.sendRedirect("index.jsp");
+                            return;
+                        } 
+                    
+                }
+            }
+            
+            
+            
             Cookie UserCookie = new Cookie(util.HashString(session.toString() + "empnum", "SHA-256"), util.HashString(this.username, "SHA-256"));	
             
             
@@ -105,6 +129,7 @@ public class Login extends HttpServlet{
             Cookie LoginTimeCookie = new Cookie("logintime", URLEncoder.encode( new java.util.Date().toString(), "UTF-8" ));
             
             UserCookie.setMaxAge(60 * 60 * 24); // max login time, (om man laddar om sidan)
+            UserCookie.setDomain("localhost");
             LoginTimeCookie.setMaxAge(60 * 60 * 24 * 7 * 4);
             
             

@@ -44,9 +44,9 @@ public class Logout extends HttpServlet {
         
         
         
-        
+        String quickshut = (String) request.getAttribute("quickshut");
         Cookie[] cookies = request.getCookies();        
-        if(!request.getAttribute("quickshut").equals(true)){
+        if(quickshut != null){
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
                     /*
@@ -63,7 +63,7 @@ public class Logout extends HttpServlet {
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
                     /*
-                        Dont check if the cookie belongs to the current session, just purge the given computer on that server
+                        Dont check if the cookie belongs to the current session, just purge the given computer
                     */
                     cookie.setValue("");
                     cookie.setMaxAge(0);
