@@ -359,11 +359,11 @@
                         
               <%  
      
-     
+     String empcookieName = util.HashString(session.toString() + "empnum", "SHA-256");
      Cookie cookies[]=request.getCookies();  
      if (cookies != null) {
 	    for (Cookie cookie : cookies) {
-		   if (cookie.getName().equals("empnum" + util.HashString(session.toString(), "SHA-256")) && request.getSession().getAttribute("ChangePswd").equals("2")) {
+		   if (cookie.getName().equals(empcookieName) && request.getSession().getAttribute("ChangePswd").equals("2")) {
 			  System.out.println("this is test");
 			  out.print(" <h4> You must change password within 3 days, temp password is</h4>"
 			  + "<form method=\"post\" action=\"updatepswd\"><br>"
@@ -372,7 +372,7 @@
 			  + "<input type=\"submit\" value=\"change\">"
 			  + "</form>");
 		   } 
-                   if (cookie.getName().equals("empnum" + util.HashString(session.toString(), "SHA-256"))) {
+                   if (cookie.getName().equals(empcookieName)) {
                         userCookie = cookie.getValue();
 		   }
 	}                      
@@ -455,11 +455,12 @@
                 <section id="log">
                 <%  
 
-
+                     
+                     String empcookieName = util.HashString(session.toString() + "empnum", "SHA-256");
                      Cookie cookies[]=request.getCookies();  
                      if (cookies != null) {
                             for (Cookie cookie : cookies) {
-                                   if (cookie.getName().equals("empnum" + util.HashString(session.toString(), "SHA-256")) && request.getSession().getAttribute("ChangePswd").equals("2")) {
+                                   if (cookie.getName().equals(empcookieName) && request.getSession().getAttribute("ChangePswd").equals("2")) {
                                           out.print(" <fieldset> <legend>Message</legend> <h4> You must change password during this session</h4>"
                                           + "<form method=\"post\" action=\"updatepswd\"><br>"
                                           + "<input name=\"newpass\" type=\"text\" value=\"\" placeholder=\"password\"><br>"
@@ -467,7 +468,7 @@
                                           + "<input type=\"submit\" value=\"change\">"
                                           + "</form></fieldset> ");
                                    } 
-                                   if (cookie.getName().equals("empnum")) {
+                                   if (cookie.getName().equals(empcookieName)) {
                                         // add cookie to response so that the Cahngestuff might use it
                                         // set the usercookie locally to string
                                         userCookie = cookie.getValue();

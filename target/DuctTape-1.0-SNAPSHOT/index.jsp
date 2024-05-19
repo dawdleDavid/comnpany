@@ -11,7 +11,7 @@
         <img id="logo_main" src="graphics/Mage_hat.svg" alt="logo">
         <h1>Company</h1>
         <h3><i>Employee login</i></h3>
-        <form name="Login form" method="post" action="login"  accept-charset="utf-8">
+        <form name="Login form" method="post" action="home"  accept-charset="utf-8">
             <input type="text" name="username" placeholder="username" /><br>    
             <input type="password" name="password" placeholder="password" /><br>
             <input id="sub_btn" type="submit" value="Login" />

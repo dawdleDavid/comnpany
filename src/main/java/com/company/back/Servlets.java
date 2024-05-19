@@ -27,25 +27,32 @@ import java.util.Locale;
 /**
  *
  * @author david
- */
+
+*/
 
 class Validation{
     Util util = new Util();
     boolean checkCookie(HttpSession session, HttpServletRequest request){
-        String check="";
-       	    
+        Cookie check = null;
+        String empcookieName = util.HashString(session.toString() + "empnum", "SHA-256");
 	Cookie cookies[]=request.getCookies();  
 	
 	if (cookies != null) {
             for (Cookie cookie : cookies) {
-		if (cookie.getName().equals("empnum" + util.HashString(session.toString(), "SHA-256"))){
-                    check = cookie.getValue();
+		if (cookie.getName().equals(empcookieName)){
+                    check = cookie;
                 } 
             }
         }
-        if(check.equals(request.getSession().getAttribute("EmployeeNumber").toString())){
-            return true;
+        if(check != null){
+                if(check.getValue().equals(request.getSession().getAttribute("empnum_hashed"))){
+                return true;
+            }   
         }
+        
+
+        
+        
         return false;
     }
     public Validation(){
@@ -80,8 +87,9 @@ public class Servlets extends HttpServlet{
 
 
             if(!validation.checkCookie(request.getSession(), request)){
-                request.setAttribute("error", "Cookie value error");
-                request.getRequestDispatcher("response.jsp").forward(request, response);   
+                request.setAttribute("quickshut", true);
+                request.getRequestDispatcher("logout").forward(request, response);   
+                return;
             }
             
             
@@ -212,11 +220,14 @@ class AddOrder extends HttpServlet{
 
 @WebServlet("/addCustomer")
 class AddCustomer extends HttpServlet{
-        
     Changestuff change;
     Getstuff get;
     ArrayList<String> parameters = new ArrayList();
     Util util = new Util();
+    
+    
+    
+    
     @Override
      protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    
@@ -226,9 +237,10 @@ class AddCustomer extends HttpServlet{
 	    Cookie cookies[]=request.getCookies();  
 	
 
+            String empcookieName = util.HashString(session.toString() + "empnum", "SHA-256");
 	     if (cookies != null) {
 		   for (Cookie cookie : cookies) {
-			  if (cookie.getName().equals("empnum" + util.HashString(session.toString(), "SHA-256"))){
+			  if (cookie.getName().equals(empcookieName)){
                                 System.out.println("Empnum_cookie: " + cookie.getValue());
 				 this.get = new Getstuff();
 				 this.change = new Changestuff(this.get.GetConnection());
@@ -257,8 +269,9 @@ class AddCustomer extends HttpServlet{
                                         
                                         Validation validation = new Validation();
                                         if(!validation.checkCookie(request.getSession(), request)){
-                                            request.setAttribute("error", "Cookie value error");
-                                            request.getRequestDispatcher("response.jsp").forward(request, response);   
+                                            request.setAttribute("quickshut", true);
+                                            request.getRequestDispatcher("logout").forward(request, response);   
+                                            return;
                                         }
                                         
                                         
@@ -321,6 +334,15 @@ class UpdateOrder extends HttpServlet{
                             parameters.add(request.getParameter("status"));
                             parameters.add(request.getParameter("comment"));
                             
+                            
+                            Validation validation = new Validation();
+                            if(!validation.checkCookie(request.getSession(), request)){
+                                request.setAttribute("quickshut", true);
+                                request.getRequestDispatcher("logout").forward(request, response);   
+                                return;
+                            }
+                            
+                            
                             System.out.println(parameters);
                             if(parameters.contains("")){
 				System.out.println("this.parameters.contains(null)");
@@ -331,11 +353,7 @@ class UpdateOrder extends HttpServlet{
                             
                             
                             
-                            Validation validation = new Validation();
-                            if(!validation.checkCookie(request.getSession(), request)){
-                                request.setAttribute("error", "Cookie value error");
-                                request.getRequestDispatcher("response.jsp").forward(request, response);   
-                            }
+                        
                             
                             if(parameters.get(3).length() > 500){
                                 request.setAttribute("error", "Comments can be no longer than 500 characters");
@@ -405,8 +423,9 @@ class updateOrderDetails extends HttpServlet{
                             
                     Validation validation = new Validation();
                     if(!validation.checkCookie(request.getSession(), request)){
-                        request.setAttribute("error", "Cookie value error");
-                        request.getRequestDispatcher("response.jsp").forward(request, response);   
+                        request.setAttribute("quickshut", true);
+                        request.getRequestDispatcher("logout").forward(request, response); 
+                        return;
                     }
                     try{
                         this.connection = this.get.GetConnection();
@@ -481,8 +500,9 @@ class postToOrder extends HttpServlet{
                                              
                     Validation validation = new Validation();
                     if(!validation.checkCookie(request.getSession(), request)){
-                        request.setAttribute("error", "Cookie value error");
-                        request.getRequestDispatcher("response.jsp").forward(request, response);   
+                        request.setAttribute("quickshut", true);
+                        request.getRequestDispatcher("logout").forward(request, response);   
+                        return;
                     }
                     
                     

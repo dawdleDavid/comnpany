@@ -41,23 +41,43 @@ public class Logout extends HttpServlet {
         System.out.println("SESSION(Logout): " + session.getId());
         Util util = new Util();
         // //
-        Cookie[] cookies = request.getCookies();
+        
+        
+        
+        
+        Cookie[] cookies = request.getCookies();        
+        if(!request.getAttribute("quickshut").equals(true)){
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
                     /*
                         Check if the cookie belongs to the current session
                     */
-                    if(cookie.getName().contains(util.HashString(session.toString(), "SHA-256"))){
+                    if(cookie.getName().equals(util.HashString(session.toString() + "empnum", "SHA-256"))){
                         cookie.setValue("");
                         cookie.setMaxAge(0);
                         response.addCookie(cookie);   
                     } 
                 }
+            }
+        }else{
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    /*
+                        Dont check if the cookie belongs to the current session, just purge the given computer on that server
+                    */
+                    cookie.setValue("");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);      
+                }
+            }
         }
         // invalidera session
         request.getSession().invalidate();
         // post till index.jsp
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        
+        response.sendRedirect("index.jsp");
+        // just in case
+        return;
          
     }catch(Exception e){ // generic exception
 	    System.out.println("logout exception: " + e);

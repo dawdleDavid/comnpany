@@ -18,7 +18,7 @@ import java.net.URLEncoder;
  */
 
 
-@WebServlet("/login")
+@WebServlet("/home")
 public class Login extends HttpServlet{
     String username;
     String password;
@@ -86,16 +86,22 @@ public class Login extends HttpServlet{
 	// attributes
         
             /*
-                Set session attributes...
+                Set session attributes..
             */
             session.setAttribute("EmployeeNumber", this.username);
+            session.setAttribute("empnum_hashed", util.HashString(this.username, "SHA-256"));
             session.setAttribute("Firstname", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "firstName", "employees", "employeeNumber").get(0));
             session.setAttribute("Job", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "jobTitle", "employees", "employeeNumber").get(0));
             session.setAttribute("Lastname", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "lastName", "employees", "employeeNumber").get(0));
             session.setAttribute("Extension", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "extension", "employees", "employeeNumber").get(0));
             session.setAttribute("ChangePswd", this.get.GetFromEmployeeNumber(Integer.parseInt(this.username), "requirePwdChange", "employees", "employeeNumber").get(0));
             // cookies
-            Cookie UserCookie = new Cookie("empnum" + util.HashString(session.toString(), "SHA-256"), this.username);	
+            
+            // validation 
+            Cookie UserCookie = new Cookie(util.HashString(session.toString() + "empnum", "SHA-256"), util.HashString(this.username, "SHA-256"));	
+            
+            
+            
             Cookie LoginTimeCookie = new Cookie("logintime", URLEncoder.encode( new java.util.Date().toString(), "UTF-8" ));
             
             UserCookie.setMaxAge(60 * 60 * 24); // max login time, (om man laddar om sidan)
