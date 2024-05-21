@@ -49,7 +49,6 @@ class Validation{
                 return true;
             }   
         }
-
         return false;
     }
     public Validation(){
@@ -589,19 +588,13 @@ class addOffice extends HttpServlet{
             result.next();
             int officeCode = Integer.parseInt(result.getString("officeCode")) + 1;
             System.out.println("OfficeCode:" + String.valueOf(officeCode));
-               
-            //
-            
-            
-
-                sql = "INSERT INTO offices (city, phone, addressLine1, addressLine2, state, country, postalCode, territory, officeCode) VALUES('"+ parameters.get(0) +"', '"+ parameters.get(1) +"', '"+ parameters.get(2) +"', '"+ parameters.get(3) +"', '"+ parameters.get(4) +"', '"+ parameters.get(5) +"', '"+ parameters.get(6) +"', '"+ parameters.get(7) +"', '"+ String.valueOf(officeCode) +"');";
-                System.out.println(sql);
-                Statement statement = this.connection.prepareStatement(sql);
-                statement.execute(sql);
-                this.connection.close();
-                request.getRequestDispatcher("response.jsp").forward(request, response);     
-
-            request.getRequestDispatcher("response.jsp").forward(request, response);    
+            sql = "INSERT INTO offices (city, phone, addressLine1, addressLine2, state, country, postalCode, territory, officeCode) VALUES('"+ parameters.get(0) +"', '"+ parameters.get(1) +"', '"+ parameters.get(2) +"', '"+ parameters.get(3) +"', '"+ parameters.get(4) +"', '"+ parameters.get(5) +"', '"+ parameters.get(6) +"', '"+ parameters.get(7) +"', '"+ String.valueOf(officeCode) +"');";
+            System.out.println(sql);
+            Statement statement = this.connection.prepareStatement(sql);
+            statement.execute(sql);
+            this.connection.close();
+            request.getRequestDispatcher("response.jsp").forward(request, response);     
+            return;
         }catch(SQLException e){
             request.setAttribute("error", "SQL exception");
             request.getRequestDispatcher("response.jsp").forward(request, response);      
